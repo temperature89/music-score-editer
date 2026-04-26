@@ -1,0 +1,20 @@
+from pathlib import Path
+import os
+
+FILENAME = "music_folder_new"
+path = Path(f"../{FILENAME}")
+instruments = [
+    "Picc_Fl_Ob_Fg",
+    "Cl",
+    "Sax",
+    "Hr",
+    "Tb",
+    "Bass",
+    "Perc",
+    "スコア",
+]
+
+path.mkdir()
+for i, name in enumerate(instruments):
+    folder_name = path / f"{i + 1}_{name}"
+    folder_name.mkdir()
