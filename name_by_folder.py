@@ -1,16 +1,14 @@
-from PyPDF2 import PdfReader, PdfWriter
+import os
 from pathlib import Path
-
 FILENAME = "music_folder"
+
 
 def main():
     root = Path(f"./{FILENAME}")
-    matches = []
+    i = 1
     for p in root.rglob("*.pdf"):
-        writer = PdfWriter()
-        writer.append(p)
-        writer.write(f"./output/{p.name}")
-        writer.close()
+        os.rename(p.name, f"{FILENAME}_{i}")
+        i += 1
         
 if __name__ == "__main__":
     main()
