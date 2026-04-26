@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 
-FILENAME = "music_folder_new"
+FILENAME = "宝島"
 path = Path(f"../{FILENAME}")
 instruments = [
     "Picc_Fl_Ob_Fg",

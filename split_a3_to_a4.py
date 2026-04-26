@@ -1,7 +1,8 @@
 from pypdf import PdfReader, PdfWriter, PageObject, Transformation
 
 # 入力PDFを読み込む
-reader = PdfReader("output_a3_combined.pdf")
+FILENAME = "../宝島_仮置き/宝島_6.pdf"
+reader = PdfReader(FILENAME)
 writer = PdfWriter()
 
 for page in reader.pages:
@@ -31,7 +32,7 @@ for page in reader.pages:
     writer.add_page(right_page)
 
 # 保存
-with open("output_a4_splited.pdf", "wb") as f:
+with open("../output_a4_splited.pdf", "wb") as f:
     writer.write(f)
 
 print("A3 PDF を A4 2枚に分割しました。")
