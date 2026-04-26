@@ -16,5 +16,5 @@ instruments = [
 
 path.mkdir()
 for i, name in enumerate(instruments):
-    folder_name = path / f"{i + 1}_{name}"
+    folder_name = path / f"0{i + 1}_{name}"
     folder_name.mkdir()
