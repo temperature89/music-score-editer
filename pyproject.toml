@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "music-score-editer"
+version = "0.1.0"
+description = "CLI tool for editing music score PDFs"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "typer[all]",
+    "pypdf",
+]
+
+[project.scripts]
+msc = "main:app"
+
+[tool.setuptools]
+py-modules = [
+    "main",
+    "collect_pdf",
+    "merge",
+    "merge_2",
+    "split_a3_to_a4",
+    "split_a4_by1",
+    "split_a4_by2",
+    "combine_a4_to_a3",
+    "make_dir",
+    "name_by_folder",
+]
