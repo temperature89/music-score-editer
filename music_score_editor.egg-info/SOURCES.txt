@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+music_score_editor.egg-info/PKG-INFO
+music_score_editor.egg-info/SOURCES.txt
+music_score_editor.egg-info/dependency_links.txt
+music_score_editor.egg-info/entry_points.txt
+music_score_editor.egg-info/requires.txt
+music_score_editor.egg-info/top_level.txt
