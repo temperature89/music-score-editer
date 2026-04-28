@@ -1,19 +1,13 @@
-from pypdf import PdfReader, PdfWriter
 from pathlib import Path
+from pypdf import PdfReader, PdfWriter
 
-FILENAME = "music_folder"
 
-def main():
-    root = Path(f"./{FILENAME}")
-    matches = []
-    for p in root.rglob("*.pdf"):
-        matches.append(p)
+def merge_pdfs(files: list[Path]):
+    """複数のPDFファイルを結合する。"""
     writer = PdfWriter()
-    for m in matches:
-        writer.append(m)
-        
-    writer.write("merged.pdf")
-    writer.close()
 
-if __name__ == "__main__":
-    main()
+    for file in files:
+        reader = PdfReader(str(file))
+        for page in reader.pages:
+            writer.add_page(page)
+    writer.write(f"{files[1]}_merged.pdf")

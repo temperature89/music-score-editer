@@ -9,10 +9,10 @@ src/music_score_editor.egg-info/dependency_links.txt
 src/music_score_editor.egg-info/entry_points.txt
 src/music_score_editor.egg-info/requires.txt
 src/music_score_editor.egg-info/top_level.txt
+src/music_score_editor/file/make_dir.py
 src/music_score_editor/pdf/__init__.py
 src/music_score_editor/pdf/collect_pdf.py
 src/music_score_editor/pdf/combine_a4_to_a3.py
-src/music_score_editor/pdf/make_dir.py
 src/music_score_editor/pdf/merge.py
 src/music_score_editor/pdf/merge_2.py
 src/music_score_editor/pdf/name_by_folder.py

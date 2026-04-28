@@ -2,6 +2,7 @@ import typer
 from pathlib import Path
 from music_score_editor.pdf.split import split_by_n
 from music_score_editor.file.make_dir import make_dir
+from music_score_editor.pdf.merge import merge_pdfs
 
 app = typer.Typer()
 
@@ -13,15 +14,17 @@ def split(
     split_by_n(file, n)
 
 @app.command()
-def merge():
-    """PDFを結合します"""
-    print("PDFを結合します")
+def merge(
+    files: list[Path]
+):
+    merge_pdfs(files)
     
 @app.command()
 def make(
-    file: Path = typer.Option("music_scores", "--name", "-n", help="楽譜配布用のディレクトリを作成")
+    base_name: Path = typer.Option("music_scores", "--name", "-n", help="ディレクトリ名"),
+    subdir_names: list[Path] = typer.Option([""], "--subdir", "-s", help="最下層のディレクトリ名")
 ):
-    make_dir(file)
+    make_dir(base_name, subdir_names)
 
 if __name__ == "__main__":
     app()

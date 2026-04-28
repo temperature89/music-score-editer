@@ -1,6 +1,6 @@
 from pathlib import Path
 
-def make_dir(file: str):
+def make_dir(base_name: str, subdir_names: list[str]):
     instruments = [
         "Picc_Fl_Ob_Fg",
         "Cl",
@@ -12,9 +12,16 @@ def make_dir(file: str):
         "スコア",
     ]
 
-    base = Path(file)
+    base = Path(base_name)
     base.mkdir(exist_ok=True)
 
-    for i, name in enumerate(instruments, start=1):
-        folder = base / f"{i:02d}_{name}"
-        folder.mkdir(exist_ok=True)
+    for i, instrument in enumerate(instruments, start=1):
+        instrument_dir = base / f"{i:02d}_{instrument}"
+        instrument_dir.mkdir(exist_ok=True)
+        
+        if subdir_names == [""]:
+            continue
+        
+        for subdir_name in subdir_names:
+            subdir = Path(subdir_name)
+            (instrument_dir / subdir).mkdir(exist_ok=True)
