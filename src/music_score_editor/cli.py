@@ -4,6 +4,9 @@ from music_score_editor.pdf.split import split_by_n
 from music_score_editor.file.make_dir import make_dir
 from music_score_editor.pdf.merge import merge_pdfs
 from music_score_editor.file.distribute import distribute_file
+from music_score_editor.file.collect import collect_pdfs
+from music_score_editor.pdf.split_a3_to_a4 import split_a3_to_a4
+from music_score_editor.pdf.combine_a4_to_a3 import combine_a4_to_a3
 
 app = typer.Typer()
 
@@ -34,6 +37,40 @@ def distribute(
 ):
     for d in destinations:
         distribute_file(source, d)
+        
+@app.command()
+def collect(
+    source: Path,
+    destination: Path = typer.Option("outputs", "--destination", "-d", help="収集したファイルのパス")
+):
+    collect_pdfs(source, destination)
+
+@app.command()
+def resize(
+    source: Path,
+    size: str,
+    destination: Path | None = typer.Option(
+        None,
+        "--destination",
+        "-d",
+        help="出力先ファイル"
+    )
+):
+    # -d が指定されていない場合
+    if destination is None:
+        destination = source.with_name(f"{source.stem}_resized.pdf")
+
+    # ディレクトリが指定された場合
+    elif destination.is_dir() or destination.suffix == "":
+        destination.mkdir(parents=True, exist_ok=True)
+        destination = destination / f"{source.stem}_resized.pdf"
+
+    if size.lower() == "a3":
+        combine_a4_to_a3(source, destination)
+    elif size.lower() == "a4":
+        split_a3_to_a4(source, destination)
+    else:
+        raise typer.BadParameter("size は 'a3' または 'a4' を指定してください。")
 
 if __name__ == "__main__":
     app()

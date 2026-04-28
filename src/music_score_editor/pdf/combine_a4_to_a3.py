@@ -31,11 +31,8 @@ def combine_a4_to_a3(input_pdf_path, output_pdf_path):
             new_page.merge_transformed_page(p2, transformation)
 
         writer.add_page(new_page)
-
+        
     with open(output_pdf_path, "wb") as f:
         writer.write(f)
 
     print(f"結合完了: {output_pdf_path}")
-
-if __name__ == "__main__":
-    combine_a4_to_a3("merged_a4.pdf", "output_a3_combined.pdf")
