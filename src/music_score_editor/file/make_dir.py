@@ -10,6 +10,7 @@ def make_dir(base_name: str, subdir_names: list[str]):
         "Tb",
         "Bass",
         "Perc",
+        "Pf_Gt_Harp_etc",
         "スコア",
     ]
 

@@ -20,7 +20,10 @@ def distribute_file(source: str, destination: str):
         "Euph": "07_Bass",
         "Tub": "07_Bass",
         "Perc": "08_Perc",
-        "score": "09_スコア",
+        "Pf": "09_Pf_Gt_Harp_etc",
+        "Gt": "09_Pf_Gt_Harp_etc",
+        "Harp": "09_Pf_Gt_Harp_etc",
+        "score": "10_スコア",
     }
     
     destination_root = Path(destination)
@@ -46,7 +49,7 @@ def distribute_file(source: str, destination: str):
                 print(f"コピー: {t.name} → {matched_folder}/{t_title}/")
             else:
                 # 未対応はdestinationの1つ下に配置
-                target_dir = destination_root
+                target_dir = destination_root / Path("09_Pf_Gt_Harp_etc") / t_title
                 target_dir.mkdir(parents=True, exist_ok=True)
                 dest_path = target_dir / t.name
                 shutil.copy2(t, dest_path)
