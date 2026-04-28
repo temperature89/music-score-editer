@@ -3,6 +3,7 @@ from pathlib import Path
 from music_score_editor.pdf.split import split_by_n
 from music_score_editor.file.make_dir import make_dir
 from music_score_editor.pdf.merge import merge_pdfs
+from music_score_editor.file.distribute import distribute_file
 
 app = typer.Typer()
 
@@ -25,6 +26,14 @@ def make(
     subdir_names: list[Path] = typer.Option([""], "--subdir", "-s", help="最下層のディレクトリ名")
 ):
     make_dir(base_name, subdir_names)
+
+@app.command()
+def distribute(
+    source: Path,
+    destinations: list[Path]
+):
+    for d in destinations:
+        distribute_file(source, d)
 
 if __name__ == "__main__":
     app()

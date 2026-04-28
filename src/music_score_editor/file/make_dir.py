@@ -5,6 +5,7 @@ def make_dir(base_name: str, subdir_names: list[str]):
         "Picc_Fl_Ob_Fg",
         "Cl",
         "Sax",
+        "Tp",
         "Hr",
         "Tb",
         "Bass",
