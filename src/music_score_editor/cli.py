@@ -7,6 +7,8 @@ from music_score_editor.file.distribute import distribute_file
 from music_score_editor.file.collect import collect_pdfs
 from music_score_editor.pdf.split_a3_to_a4 import split_a3_to_a4
 from music_score_editor.pdf.combine_a4_to_a3 import combine_a4_to_a3
+from music_score_editor.pdf.extract import extract_pages
+from music_score_editor.pdf.remove import remove_pages
 
 app = typer.Typer()
 
@@ -71,6 +73,37 @@ def resize(
         split_a3_to_a4(source, destination)
     else:
         raise typer.BadParameter("size は 'a3' または 'a4' を指定してください。")
+    
+@app.command()
+def extract(
+    input_pdf: Path, 
+    start_page: int, 
+    end_page: int, 
+    output_pdf: Path | None = typer.Option(
+        None,
+        "--name",
+        "-n", 
+        help="出力先ファイル"
+        )
+):
+    if output_pdf == None:
+        output_pdf = input_pdf.with_name(f"{input_pdf.stem}_extracted.pdf")
+    extract_pages(input_pdf, start_page, end_page, output_pdf)
+
+@app.command()
+def remove(
+    input_pdf: Path, 
+    pages_to_remove: list[int],
+    output_pdf: Path | None = typer.Option(
+        None,
+        "--name",
+        "-n", 
+        help="出力先ファイル"
+        )
+):
+    if output_pdf == None:
+        output_pdf = input_pdf.with_name(f"{input_pdf.stem}_removed.pdf")
+    remove_pages(input_pdf, pages_to_remove, output_pdf)
 
 if __name__ == "__main__":
     app()
