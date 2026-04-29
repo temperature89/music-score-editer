@@ -1,6 +1,12 @@
-# music-score-editer
+# music-score-editor
 
-PDF楽譜を編集するためのPythonスクリプト集です。
+PDF楽譜を編集するためのCLIツールです。
+
+## インストール
+
+```bash
+pip install -e .
+```
 
 ## 前提ライブラリ
 
@@ -8,38 +14,112 @@ PDF楽譜を編集するためのPythonスクリプト集です。
 pip install pypdf PyPDF2
 ```
 
-## スクリプト一覧
+## コマンド一覧
 
-### split_a3_to_a4.py
-A3サイズのPDFをA4サイズ2枚に分割します。
-横向きのA3ページを左半分と右半分に分け、それぞれA4サイズのPDFとして出力します。
+### split
 
-### split_a4_by1.py
-A4 PDFを1ページずつ個別のPDFファイルに分割します。
-例: `宝島a4.pdf` → `outputs/宝島a4_0.pdf`, `outputs/宝島a4_1.pdf`, ...
+PDFを指定したページ数ごとに分割します。
 
-### split_a4_by2.py
-A4 PDFを2ページずつ1つのPDFに結合します。
-例: ページ0+1 → ファイル1, ページ2+3 → ファイル2, ...
+```bash
+msc split <file> --n <1つの出力PDFに含めるページ数>
+```
 
-### combine_a4_to_a3.py
-A4サイズのPDF2枚を組み合わせてA3サイズのPDFを作成します。
-奇数ページは左側、偶数ページは右側に配置されます。
+**例:**
+```bash
+msc split input.pdf --n 2
+```
 
-### merge.py
-指定したフォルダ内のすべてのPDFファイルを1つのPDFに結合します。
-`FILENAME`変数を変更して対象フォルダを指定してください。
+### merge
 
-### merge_2.py
-`../merge`フォルダ内のPDFファイルを順番に結合して`merged.pdf`を作成します。
+複数のPDFファイルを1つのPDFに結合します。
 
-### collect_pdf.py
-指定フォルダ内のPDFを1つずつ個別のPDFとして出力します。
-（各ページを単一ファイルのPDFとして保存）
+```bash
+msc merge <file1> <file2> ...
+```
 
-### name_by_folder.py
-PDFファイルの名前を連番にリネームします。
+**例:**
+```bash
+msc merge file1.pdf file2.pdf file3.pdf
+```
 
-### make_dir.py
+### make
+
 楽譜用のフォルダ構造を作成します。
-`FILENAME`と`instruments`リストを変更して使用します。
+
+```bash
+msc make --name <ディレクトリ名> --subdir <最下層のディレクトリ名>
+```
+
+**例:**
+```bash
+msc make --name "定期演奏会" --subdir "01_Picc" "02_Cl" "03_Sax"
+```
+
+### distribute
+
+ファイルを複数のディレクトリにコピーします。
+
+```bash
+msc distribute <source> --destinations <destination1> <destination2> ...
+```
+
+**例:**
+```bash
+msc distribute score.pdf --destinations dir1 dir2 dir3
+```
+
+### collect
+
+指定フォルダ内のPDFを収集して1つのフォルダにまとめます。
+
+```bash
+msc collect <source> --destination <出力先>
+```
+
+**例:**
+```bash
+msc collect 定期演奏会 --destination outputs
+```
+
+### resize
+
+PDFのサイズを変更します（A3 ↔ A4）。
+
+```bash
+msc resize <source> <a3|a4> --destination <出力先>
+```
+
+**例:**
+```bash
+# A4 PDFをA3サイズに結合
+msc resize input.pdf a3 --destination output.pdf
+
+# A3 PDFをA4サイズに分割
+msc resize input.pdf a4 --destination output.pdf
+```
+
+### extract
+
+PDFから指定した範囲のページを抽出します。
+
+```bash
+msc extract <input_pdf> <start_page> <end_page> --name <出力先>
+```
+
+**例:**
+```bash
+msc extract input.pdf 1 10 --name extracted.pdf
+```
+
+### remove
+
+PDFから指定したページを削除します。
+
+```bash
+msc remove <input_pdf> <pages_to_remove> --name <出力先>
+```
+
+**例:**
+```bash
+msc remove input.pdf 1 3 5 --name output.pdf
+```
