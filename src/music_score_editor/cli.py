@@ -9,6 +9,8 @@ from music_score_editor.pdf.split_a3_to_a4 import split_a3_to_a4
 from music_score_editor.pdf.combine_a4_to_a3 import combine_a4_to_a3
 from music_score_editor.pdf.extract import extract_pages
 from music_score_editor.pdf.remove import remove_pages
+from music_score_editor.pdf.make_booklet import impose_booklet
+from music_score_editor.pdf.split_booklet import booklet_a3_to_a4
 
 app = typer.Typer()
 
@@ -104,6 +106,30 @@ def remove(
     if output_pdf == None:
         output_pdf = input_pdf.with_name(f"{input_pdf.stem}_removed.pdf")
     remove_pages(input_pdf, pages_to_remove, output_pdf)
+
+@app.command()
+def booklet(
+    source: Path,
+    destination: Path | None = typer.Option(
+        None,
+        "--destination",
+        "-d",
+        help="出力先ファイル"
+    )
+):
+    impose_booklet(source, destination)
+    
+@app.command()
+def unbooklet(
+    source: Path,
+    destination: Path | None = typer.Option(
+        None,
+        "--destination",
+        "-d",
+        help="出力先ファイル"
+    )
+):
+    booklet_a3_to_a4(source, destination)
 
 if __name__ == "__main__":
     app()
