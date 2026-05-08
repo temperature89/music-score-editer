@@ -11,7 +11,7 @@ from music_score_editor.pdf.extract import extract_pages
 from music_score_editor.pdf.remove import remove_pages
 from music_score_editor.pdf.make_booklet import impose_booklet
 from music_score_editor.pdf.split_booklet import booklet_a3_to_a4
-from music_score_editor.pdf.fix_a4_to_a3 import fix_a4_to_a3
+from music_score_editor.pdf.fix_a4_to_a3 import resize_pdf
 from music_score_editor.pdf.rotate import rotate_pdf
 
 app = typer.Typer()
@@ -136,6 +136,7 @@ def unbooklet(
 @app.command()
 def fixsize(
     source: Path,
+    paper_size: str,
     destination: Path | None = typer.Option(
         None,
         "--destination",
@@ -143,7 +144,7 @@ def fixsize(
         help="出力先ファイル"
     )
 ):
-    fix_a4_to_a3(source, destination)
+    resize_pdf(source, destination, paper_size)
     
 @app.command()
 def rotate(

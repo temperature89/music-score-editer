@@ -1,52 +1,58 @@
 from pathlib import Path
 from pypdf import PdfReader, PdfWriter, Transformation
 
+# 用紙サイズ（ポイント）
+A4 = (595.28, 841.89)
+A3 = (1190.55, 841.89)
 
-def fix_a4_to_a3(input_pdf: str, output_pdf: str | None = None) -> Path:
-    """
-    横向きA4のPDFをA3サイズに拡大して配置する
-    """
-    input_path = Path(input_pdf)
-    if not input_path.exists():
-        raise FileNotFoundError(f"ファイルが見つかりません: {input_pdf}")
+def resize_pdf(
+    input_pdf: str,
+    output_pdf: str | None = None,
+    paper_size: str = "A4",
+):
+    paper_size = paper_size.upper()
 
     if output_pdf is None:
-        output_path = input_path.with_name(input_path.stem + "_a3.pdf")
-    else:
-        output_path = Path(output_pdf)
+        output_pdf = (
+            Path(input_pdf).stem
+            + f"_{paper_size}.pdf"
+        )
 
-    reader = PdfReader(input_path)
+    reader = PdfReader(input_pdf)
     writer = PdfWriter()
 
-    # A3サイズ（ポイント単位）
-    # 1 inch = 72 pt
-    # A3: 297 × 420 mm → 約 (842 × 1191 pt)
-    A3_WIDTH = 1191  # 横向き
-    A3_HEIGHT = 842
+    target_width, target_height = A4 if paper_size.upper() == "A4" else A3
 
     for page in reader.pages:
-        # 元のサイズ取得
+        # 元サイズ
         width = float(page.mediabox.width)
         height = float(page.mediabox.height)
 
-        # スケール計算（A3に収まるように）
-        scale_x = A3_WIDTH / width
-        scale_y = A3_HEIGHT / height
-        scale = min(scale_x, scale_y)
+        # 比率維持で拡大縮小
+        scale = min(target_width / width, target_height / height)
 
-        # 新しい空ページ（A3）
-        new_page = writer.add_blank_page(width=A3_WIDTH, height=A3_HEIGHT)
+        new_width = width * scale
+        new_height = height * scale
 
-        # 中央配置のための移動量
-        tx = (A3_WIDTH - width * scale) / 2
-        ty = (A3_HEIGHT - height * scale) / 2
+        # 中央配置
+        tx = (target_width - new_width) / 2
+        ty = (target_height - new_height) / 2
 
-        # 変換（拡大＋移動）
-        transformation = Transformation().scale(scale).translate(tx, ty)
+        # 新しい空ページ
+        new_page = writer.add_blank_page(
+            width=target_width,
+            height=target_height,
+        )
 
-        new_page.merge_transformed_page(page, transformation)
+        # 変換
+        new_page.merge_transformed_page(
+            page,
+            Transformation()
+            .scale(scale)
+            .translate(tx, ty),
+        )
 
-    with open(output_path, "wb") as f:
+    with open(output_pdf, "wb") as f:
         writer.write(f)
 
-    return output_path
+    print(f"保存完了: {output_pdf}")
