@@ -123,3 +123,24 @@ msc remove <input_pdf> <pages_to_remove> --name <出力先>
 ```bash
 msc remove input.pdf 1 3 5 --name output.pdf
 ```
+
+### swap
+
+指定したページ同士を入れ替えます。ページ番号は1始まりで、2つずつ組にして順に交換します。
+ディレクトリを指定した場合は、その直下のPDFすべてに同じ入れ替えを適用します。
+
+```bash
+msc swap <source> <page_a> <page_b> [<page_c> <page_d> ...] --destination <出力先>
+```
+
+**例:**
+```bash
+# 1ページ目と3ページ目を入れ替える
+msc swap input.pdf 1 3 --destination output.pdf
+
+# 1↔3 のあと 2↔4 を入れ替える
+msc swap input.pdf 1 3 2 4
+
+# ディレクトリ内の全PDFに同じ入れ替えを適用する
+msc swap scores 2 3 --destination swapped
+```

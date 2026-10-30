@@ -15,6 +15,7 @@ from music_score_editor.pdf.make_booklet import impose_booklet
 from music_score_editor.pdf.split_booklet import booklet_a3_to_a4
 from music_score_editor.pdf.fix_a4_to_a3 import crop_to_paper
 from music_score_editor.pdf.rotate import rotate_pdf
+from music_score_editor.pdf.swap import swap_pages
 
 app = typer.Typer()
 
@@ -169,6 +170,20 @@ def rotate(
     )
 ):
     rotate_pdf(source, angle, destination)
+
+@app.command()
+def swap(
+    source: Path,
+    pages: list[int] = typer.Argument(..., help="入れ替えるページ番号（1始まり、2つずつ組）"),
+    destination: Optional[Path] = typer.Option(
+        None,
+        "--destination",
+        "-d",
+        help="出力先ファイルまたはディレクトリ"
+    )
+):
+    """指定したページ同士を入れ替える。ディレクトリを指定すると含まれるPDFすべてに適用する。"""
+    swap_pages(source, pages, destination)
 
 if __name__ == "__main__":
     app()
