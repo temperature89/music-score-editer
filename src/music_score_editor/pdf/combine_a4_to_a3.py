@@ -12,7 +12,8 @@ def combine_a4_to_a3(input_pdf_path, output_pdf_path):
 
     for i in range(0, num_pages, 2):
         # 1枚目のページを取得
-        p1 = reader.pages[i]
+        p1 = reader.pages[i].get_object()
+        p1.transfer_rotation_to_content()
         width = p1.mediabox.width
         height = p1.mediabox.height
 
@@ -25,7 +26,8 @@ def combine_a4_to_a3(input_pdf_path, output_pdf_path):
 
         # 2枚目があるか確認
         if i + 1 < num_pages:
-            p2 = reader.pages[i + 1]
+            p2 = reader.pages[i + 1].get_object()
+            p2.transfer_rotation_to_content()
             # 右側に配置するために、x軸方向にwidth分だけスライドさせる変形を適用
             transformation = Transformation().translate(tx=float(width), ty=0)
             new_page.merge_transformed_page(p2, transformation)

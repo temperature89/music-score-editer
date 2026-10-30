@@ -1,10 +1,12 @@
 import typer
 from pathlib import Path
+from typing import Optional
 from music_score_editor.pdf.split import split_by_n
 from music_score_editor.file.make_dir import make_dir
 from music_score_editor.pdf.merge import merge_pdfs
 from music_score_editor.file.distribute import distribute_file
 from music_score_editor.file.collect import collect_pdfs
+from music_score_editor.file.rename import rename_pdfs
 from music_score_editor.pdf.split_a3_to_a4 import split_a3_to_a4
 from music_score_editor.pdf.combine_a4_to_a3 import combine_a4_to_a3
 from music_score_editor.pdf.extract import extract_pages
@@ -52,10 +54,19 @@ def collect(
     collect_pdfs(source, destination)
 
 @app.command()
+def rename(
+    directory: Path,
+    filename: str,
+):
+    """指定ディレクトリ内のPDFを <filename>_<通し番号>.pdf にリネームする。"""
+    renamed = rename_pdfs(directory, filename)
+    typer.echo(f"Renamed {len(renamed)} PDF file(s).")
+
+@app.command()
 def resize(
     source: Path,
     size: str,
-    destination: Path | None = typer.Option(
+    destination: Optional[Path] = typer.Option(
         None,
         "--destination",
         "-d",
@@ -83,7 +94,7 @@ def extract(
     input_pdf: Path, 
     start_page: int, 
     end_page: int, 
-    output_pdf: Path | None = typer.Option(
+    output_pdf: Optional[Path] = typer.Option(
         None,
         "--name",
         "-n", 
@@ -98,7 +109,7 @@ def extract(
 def remove(
     input_pdf: Path, 
     pages_to_remove: list[int],
-    output_pdf: Path | None = typer.Option(
+    output_pdf: Optional[Path] = typer.Option(
         None,
         "--name",
         "-n", 
@@ -112,7 +123,7 @@ def remove(
 @app.command()
 def booklet(
     source: Path,
-    destination: Path | None = typer.Option(
+    destination: Optional[Path] = typer.Option(
         None,
         "--destination",
         "-d",
@@ -124,7 +135,7 @@ def booklet(
 @app.command()
 def unbooklet(
     source: Path,
-    destination: Path | None = typer.Option(
+    destination: Optional[Path] = typer.Option(
         None,
         "--destination",
         "-d",
@@ -137,7 +148,7 @@ def unbooklet(
 def fixsize(
     source: Path,
     paper_size: str,
-    destination: Path | None = typer.Option(
+    destination: Optional[Path] = typer.Option(
         None,
         "--destination",
         "-d",
@@ -150,7 +161,7 @@ def fixsize(
 def rotate(
     source: Path,
     angle: int,
-    destination: Path | None = typer.Option(
+    destination: Optional[Path] = typer.Option(
         None,
         "--destination",
         "-d",

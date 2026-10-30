@@ -8,6 +8,9 @@ def split_a3_to_a4(input_pdf_path, output_pdf_path):
     writer = PdfWriter()
 
     for page in reader.pages:
+        page = page.get_object()
+        page.transfer_rotation_to_content()
+
         # 元ページのサイズを取得
         width = float(page.mediabox.width)
         height = float(page.mediabox.height)
