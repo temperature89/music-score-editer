@@ -1,2 +1,5 @@
 typer
 pypdf
+pypdfium2
+pillow
+pytesseract

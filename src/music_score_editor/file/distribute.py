@@ -12,7 +12,7 @@ def distribute_file(source: str, destination: str):
 
     destination_root = Path(destination)
     for t in target_pdfs:
-        parts = t.name.rstrip(".pdf").split("_")
+        parts = t.stem.rsplit("_", 1)
         if len(parts) >= 2:
             t_title = parts[0]
             t_inst = parts[1]
