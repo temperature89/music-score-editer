@@ -8,6 +8,9 @@ version = "0.1.0"
 dependencies = [
     "typer",
     "pypdf",
+    "pypdfium2",
+    "pillow",
+    "pytesseract",
 ]
 
 # [project.scripts]

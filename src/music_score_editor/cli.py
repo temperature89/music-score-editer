@@ -16,6 +16,7 @@ from music_score_editor.pdf.split_booklet import booklet_a3_to_a4
 from music_score_editor.pdf.fix_a4_to_a3 import crop_to_paper
 from music_score_editor.pdf.rotate import rotate_pdf
 from music_score_editor.pdf.swap import swap_pages
+from music_score_editor.pdf.label import label_pdfs
 
 app = typer.Typer()
 
@@ -184,6 +185,30 @@ def swap(
 ):
     """指定したページ同士を入れ替える。ディレクトリを指定すると含まれるPDFすべてに適用する。"""
     swap_pages(source, pages, destination)
+
+@app.command()
+def label(
+    source: Path,
+    title: Optional[str] = typer.Option(
+        None,
+        "--title",
+        "-t",
+        help="曲名。省略時はPDFヘッダーから推定する",
+    ),
+    destination: Optional[Path] = typer.Option(
+        None,
+        "--destination",
+        "-d",
+        help="出力先ディレクトリ。省略時は元の場所でリネームする",
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="リネームせず、推定ファイル名だけ表示する",
+    ),
+):
+    """スキャン譜のヘッダーから曲名と楽器を推定し、<曲名>_<略称>.pdf にリネームする。"""
+    label_pdfs(source, title=title, destination=destination, dry_run=dry_run)
 
 if __name__ == "__main__":
     app()
